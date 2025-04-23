@@ -76,14 +76,16 @@ The `ipython-sql` [package](https://pypi.org/project/ipython-sql/) (reimplemente
 - `%sql` inline queries
 - `%%sql` for multi-line queries
 
+Note: Allows for SQL codes within the Jupyter notebook.
+
 ```Python
 # Install required libraries
 %pip install pandas duckdb-engine ipython-sql
 
 # Import necessary libraries
 import pandas as pd
-import duckdb
-%load_ext sql
+import duckdb # database
+%load_ext sql # Note: Without importing SQL, able to use SQL
 
 # Create a sample Pandas DataFrame
 data = {'ID': [1, 2, 3, 4],
@@ -134,6 +136,9 @@ GROUP BY department_name
 ORDER BY total_employees DESC -- Order the results by total employees in descending order
 LIMIT 10; -- Limit the output to the top 10 departments
 ```
+Note: 
+- Most SQL start with SELECT - to get records
+
 
 Explanation of each part:
 
@@ -161,7 +166,7 @@ The COPY command is the most efficient way to import data into SQL databases. It
 ```sql
 -- Basic COPY syntax
 COPY table_name FROM 'file_path' 
-WITH (FORMAT csv, HEADER true);
+WITH (FORMAT csv, HEADER true); -- Note: information about the data file
 
 -- Example with NHANES data
 COPY demographics FROM 'lectures/03/demo/data/demographics.csv' 
@@ -241,18 +246,20 @@ INNER JOIN table2 ON table1.column1 = table2.column2;
 - `INNER JOIN`: Returns matching rows from both tables
 - `LEFT JOIN`: Returns all rows from left table + matching rows from right
 - `RIGHT JOIN`: Returns all rows from right table + matching rows from left
-- `FULL JOIN`: Returns all rows from both tables (use with caution!)
+- `FULL JOIN`: Returns all rows from both tables (use with caution!) (Note: may have multiple copies of same rows)
 
 ![Types of JOINs](media/join_types.png)
 
 > [!important]  
-> Always specify JOIN type explicitly to avoid unexpected FULL JOINs!
+> Always **specify JOIN type explicitly** to avoid unexpected FULL JOINs!
 
 ### Filtering and Grouping
 
 ### WHERE Clause
 
 The `WHERE` clause serves as your data gatekeeper, allowing you to filter rows based on specific conditions. It operates before grouping and aggregation, helping you focus on the data that truly matters.
+
+Note: Something that fits into if statement will be filter.
 
 **Example:**
 
@@ -283,6 +290,10 @@ SELECT category, SUM(sales) AS total_sales
 FROM products
 GROUP BY category;
 ```
+Note: if want distinct data on category, but aggregate over that category => everything else other than the 'category' will be aggregation (SUM(sales)).
+
+Multiple aggregates = No Problem
+Multiple non-aggregates = Make sure to group
 
 #### Aggregate Functions
 
@@ -313,6 +324,8 @@ GROUP BY department;
 ### HAVING Clause
 
 While the `WHERE` clause filters individual rows, the `HAVING` clause steps in after grouping to filter groups based on conditions applied to aggregate values. It's your tool for fine-tuning group-level criteria.
+
+Note: WHERE and HAVING does the same work, but WHERE only works directly with the source table and HAVING works with the aggregated data.
 
 **Example:**
 
@@ -350,7 +363,9 @@ ORDER BY avg_salary DESC;      -- Sort the final results
 
 ### Subqueries
 
-Subqueries enable you to nest one query within another. They are useful for complex queries where you need the result of one query as input for another.
+Subqueries enable you to nest **one query within another**. They are useful for complex queries where you need the result of one query as input for another.
+
+Note: subqueries can have aliases.
 
 ```SQL
 SELECT column
@@ -392,7 +407,7 @@ WHERE condition;
 INSERT INTO table (column1, column2)
 VALUES (value1, value2);
 
--- DELETE: Remove records
+-- DELETE: Remove records (rows)
 DELETE FROM table
 WHERE condition;
 ```
@@ -457,6 +472,8 @@ WHERE user_id IN (
 
 The `WITH` clause, also known as Common Table Expressions (CTE), allows you to define temporary result sets that can be referenced within the context of a larger query. It enhances the readability and reusability of complex queries.
 
+Note: Important for tech interview!!! (CTE, Window functions)
+
 ```SQL
 WITH temp_table AS (
     SELECT column
@@ -472,6 +489,8 @@ JOIN temp_table ON main_table.column = temp_table.column;
 ### Window Functions
 
 Window functions operate across a set of table rows related to the current row. They provide a powerful way to perform calculations over a specified range of rows related to the current row. Window functions are typically used in conjunction with the `OVER` clause, which defines the window or set of rows the function operates on.
+
+Note: where to apply the aggregation.
 
 ```SQL
 -- Example of calculating the running total of sales using a window function
@@ -521,6 +540,8 @@ REFRESH MATERIALIZED VIEW sales_summary;
 ### pandas Integration
 
 Pandas is a widely-used data manipulation library in Python, and Pyarrow serves as a bridge between Pandas and Arrow, a cross-language development platform for in-memory data. This combination allows for efficient conversion and manipulation of large datasets.
+
+Note: Use this when you are not using jupyter notebook (% doesn't apply).
 
 #### **Installation**
 

@@ -262,6 +262,8 @@ Healthcare time series data comes with unique challenges that can trip up even e
   - Forward/backward fill
   - Model-based imputation
 
+Note: + curve-smoothing
+
 **Conceptual**: Missing values are common in healthcare time series and can significantly impact analysis. Different imputation methods have different assumptions and effects on the resulting data.
 
 **Reference**:
@@ -388,7 +390,9 @@ plot_pacf(ts, lags=40)
 weekly_mean = ts.resample('W').mean()  # Downsample from daily to weekly
 ```
 
-#### 4. Visualization Techniques
+#### 4. Visualization Techniques 
+
+Note: will be using Matplotlib
 
 - Line plots with enhancements: confidence intervals, annotations
 - Multiple time series visualization: subplots, overlay, faceting
@@ -425,6 +429,9 @@ Key features:
 - Doesn't require specifying a particular probability distribution for survival times
 - Assumes proportional hazards (the effect of covariates is constant over time)
 - Widely used in clinical trials and epidemiological studies
+
+**Note**
+- how to measure death, risk
 
 **Reference**:
 - `lifelines.CoxPHFitter`: Implementation of Cox Proportional Hazards model
@@ -489,7 +496,7 @@ kmf.plot_survival_function()
 
 ### DEMO BREAK: Exploring Heart Rate Patterns During Meditation
 
-See: [`demo1-synthetic-timeseries`](demo/demo1-synthetic-timeseries.ipynb)
+See: [`demo1-heart-rate-meditation`](./demo/demo1-heart-rate-meditation.ipynb)
 
 ## 3. ARIMA Models
 
@@ -622,7 +629,7 @@ rmse = np.sqrt(mean_squared_error(test, predictions))
 
 ### DEMO BREAK: Sleep Quality Prediction
 
-See: [`demo2-hrv-forecasting`](demo/demo2-hrv-forecasting.ipynb)
+See: [`demo2-sleep-monitoring`](./demo/demo2-sleep-monitoring.ipynb)
 
 ## 4. Sensor Data Analysis
 
@@ -905,7 +912,7 @@ def extract_features(signal, sampling_rate):
 
 ### DEMO BREAK: Advanced Sensor Data Analysis
 
-See: [`demo3-hrv-feature-extraction`](demo/demo3-hrv-feature-extraction.ipynb)
+See: [`demo3-advanced-analysis`](./demo/demo3-advanced-analysis.ipynb)
 
 ## Summary and Key Takeaways
 
